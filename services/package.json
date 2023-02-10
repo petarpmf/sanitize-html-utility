@@ -1,0 +1,29 @@
+{
+  "name": "sanitize-html-utility",
+  "version": "1.0.0",
+  "description": "Sanitize existing html from database inserted with pasting from MS Word.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.ibm.com:NGSE/sanitize-html-utility.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "html-prettify": "^1.0.3",
+    "jsonwebtoken": "^8.4.0",
+    "mysql": "^2.18.1",
+    "pretty": "^2.0.0",
+    "request": "^2.88.2",
+    "sanitize-html": "^2.5.1"
+  },
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  }
+}

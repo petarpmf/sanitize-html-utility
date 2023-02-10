@@ -1,0 +1,111 @@
+<ngx-spinner bdColor="rgba(51,51,51,0.8)"
+size="medium"
+color="#fff"
+loadingText="Loading..."
+size="default"
+type="ball-beat"></ngx-spinner>
+<div class="jumbotron text-center">
+    <h1>Sanitize HTML Tool</h1>
+    <p>Tool for clean up HTML pasted from MS Word</p> 
+</div>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-4">
+        <label for="table">Choose a table:</label>
+        <i class="bi bi-info-circle"
+        placement="right" ngbTooltip="Choose a table"></i>
+        <select id="table" class="form-control" [(ngModel)]="table" (change)="onChangeTable($event.target.value)">
+            <option value="collection">collection</option>
+            <option value="collection_entity">collection_entity</option>
+            <option value="other_entity">other_entity</option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <label for="column">Choose a column:</label>
+        <i class="bi bi-info-circle"
+        placement="right" ngbTooltip="Choose a column"></i>
+        <select id="column" class="form-control" [(ngModel)]="column" (change)="onChangeColumn($event.target.value)">
+            <option *ngFor="let column of columns" value="{{column.value}}">{{column.name}}</option>
+        </select>
+      </div>
+      <div class="col-sm-4">
+        <label for="ids">Choise Id's:</label>
+        <i class="bi bi-info-circle"
+        placement="right" ngbTooltip="Split ids with comma"></i>
+        <input type="text" class="form-control" id="ids" [(ngModel)]="ids" (change)="onChangeIds($event.target.value)">
+      </div>
+      <div class="col-sm-4">
+        <label for="allowedTags">Allowed Tags:</label>
+        <i class="bi bi-info-circle"
+        placement="right" ngbTooltip="Uncheck to disable tag."></i>
+        <ng-multiselect-dropdown
+          id="itemsForTag"
+          [placeholder]="'Select Allowed Tags'"
+          [settings]="dropdownSettingsForTags"
+          [data]="dropdownListForTags"
+          [(ngModel)]="selectedItemsForTags"
+          (onSelect)="onTagSelect($event)"
+          (onDeSelect)="onTagDeSelect($event)"
+          >
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="col-sm-4">
+        <label for="allowedTags">Allowed Attributes:</label>
+        <i class="bi bi-info-circle"
+        placement="right" ngbTooltip="Uncheck to disable attribute. These attributes are by default disabled/unchecked: 
+        'data-mce-src', 'data-mce-href', 'data-mce-style', 'data-mce-bogus', 'data-mce-tabindex', 'class'."></i>
+        <ng-multiselect-dropdown
+          id="itemsForAttribute"
+          [placeholder]="'Select Allowed Attributes'"
+          [settings]="dropdownSettingsForAttributes"
+          [data]="dropdownListForAttributes"
+          [(ngModel)]="selectedItemsForAttributes"
+          (onSelect)="onAttributeSelect($event)"
+          (onDeSelect)="onAttributeDeSelect($event)"
+          >
+        </ng-multiselect-dropdown>
+      </div>
+    </div>
+    <div class="row mt-2" *ngIf="!!responseHtml && !!responseHtml[0]?.id">
+      <div class="col-sm-6">
+          <div class="btn-group" role="group" style="margin-right: 10px;"></div>
+          <div class="btn-group" role="group">
+              <button type="button" class="btn btn-primary mb-5 pl-5 pr-5" (click)="sanitizeEntireTable()">Sanitize entire table</button>
+          </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center" style="display: none !important; margin-top: 20%;"   id="spinner">
+      <div class="spinner-border"  role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+    <div id="wrapper" *ngIf="!!responseHtml">
+      <div>Total rows: {{responseHtml.length}}</div>
+      <div class="row">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Original HTML</th>
+                <th scope="col">Sanitized HTML</th>
+                <th scope="col">Original VIEW</th>
+                <th scope="col">Sanitized VIEW</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let response of responseHtml; let i = index">
+                <th scope="row">{{response.id}}</th>
+                <td>{{response.originalText}}</td>
+                <td>{{response.text}}</td>
+                <td><div [innerHTML]="response.originalText | safe: 'html'"></div></td>
+                <td><div [innerHTML]="response.text | safe: 'html'"></div></td>
+                <td>
+                  <button type="button" class="btn btn-primary pl-5 pr-5" (click)="sanitizeRow(response.id)">Sanitize row</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+  </div>

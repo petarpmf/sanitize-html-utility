@@ -1,0 +1,7 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+services/config.json
+ui/environments/environment.devtest.ts
+ui/environments/environment.prod.ts
+ui/environments/environment.ts
